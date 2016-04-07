@@ -1,0 +1,33 @@
+{
+  "name": "economize-rest",
+  "version": "0.0.1",
+  "description": "API de interface REST para o aplicativo Economize",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yemolai/economize-rest.git"
+  },
+  "keywords": [
+    "rest",
+    "api",
+    "node",
+    "mongo",
+    "mongoose",
+    "app",
+    "economize"
+  ],
+  "author": "Romulo Gabriel Rodrigues",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Yemolai/economize-rest/issues"
+  },
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "mongoose": "^4.1.2"
+  },
+  "homepage": "https://github.com/Yemolai/economize-rest#readme"
+}
