@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-mongoose.connect('mongodb://localhost:27017/economize');
+mongoose.createConnection('mongodb://localhost:27017/economize');
 // create instance of Schema
 var mongoSchema = mongoose.Schema;
 // create schema
