@@ -46,9 +46,9 @@ router.route("/users").get(function(req, res) {
 
             res.json(response);
         })
-        .post(function() {
+        .post(function(req, res) {
             var db = new mongoOp();
-            var repsonse = {};
+            var response = {};
             //fetch email & password from REST request.
             // Add Strict validation when you use this in Production.
             db.userEmail = req.body.email;
