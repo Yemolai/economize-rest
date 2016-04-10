@@ -124,12 +124,15 @@ router.route("/users/:id")
         if (req.body.userEmail !== undefined) {
           console.log("Atualizando email");
           // case where email needs to be updated
-          data.userEmail = req.body.userEmail;
+          data.userEmail = req.body.email;
         }
         if (req.body.userPassword !== undefined) {
           console.log("Atualizando senha");
           // case where password need to be updated
-          data.userPassword = req.body.userPassword;
+          data.userPassword = require('crypto')
+            .createHash('sha1')
+            .update(req.body.password)
+            .digest('base64');
         }
         data.save(function (err) {
           if (err) {
