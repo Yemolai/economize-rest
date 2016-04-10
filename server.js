@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({
 */
 
 router.get("/", function (req, res) {
-  console.log("Requisitando: GET / \nDados da requisição:", req);
+  console.log("Requisitando: GET /");
   res.json({ // respondendo com mensagem simpática
     "error": false,
     "message": "Hi, how are you?"
@@ -32,7 +32,7 @@ router.get("/", function (req, res) {
 // POST, etc. use o route() para remover código redundante e enxutar o script.
 
 router.route("/users").get(function (req, res) {
-  console.log("Requisitando: GET /users \nDados da requisição:", req);
+  console.log("Requisitando: GET /users");
   var response = {};
   mongoOp.find({}, function (err, data) {
     if (err) {
@@ -84,7 +84,7 @@ router.route("/users").get(function (req, res) {
 
 router.route("/users/:id")
   .get(function (req, res) {
-    console.log("Requisição: GET /users/:id \nDados da requisição:", req);
+    console.log("Requisição: GET /users/:id");
     var response = {};
     mongoOp.findById(req.params.id, function (err, data) {
       // This will run Mongo Query to fetch data based on ID
