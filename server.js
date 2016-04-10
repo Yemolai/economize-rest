@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var router = express.Router();
 // Objeto do mongoose para manipulação do MongoDB
 var mongoOp = require("./models/mongo");
+// Objeto do Mongoose para acessar DB produtos no MongoDB
 console.log("Inicializando\n\n...\n");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -90,13 +91,13 @@ router.route("/users/:id")
     mongoOp.findById(req.params.id, function (err, data) {
       // This will run Mongo Query to fetch data based on ID
       if (err) {
-        console.log("Erro ao tentar requisitar dados do MongoDB\nErro:", err);
+        console.log("Erro ao tentar requisitar dados do MongoDB\nErro: ", err);
         response = {
           "error": true,
           "message": "Error fetching the database"
         };
       } else {
-        console.log("Respondendo requisição com seguinte dados:", data);
+        console.log("Respondendo requisição com seguinte dados: ", data);
         response = {
           "error": false,
           "message": data
@@ -118,7 +119,7 @@ router.route("/users/:id")
           "message": "Error fetching data"
         };
       } else {
-        console.log("Registro " + req.params.id + "encontrado para ser atualizado");
+        console.log("Registro " + req.params.id + " encontrado para ser atualizado");
         // we've got data from Mongo.
         // change it accordingly
         if (req.body.email !== undefined) {
@@ -142,7 +143,7 @@ router.route("/users/:id")
               "message": "Error updating data"
             };
           } else {
-            console.log("Dados do registro " + req.params.id + "atualizados.");
+            console.log("Dados do registro " + req.params.id + " atualizados.");
             response = {
               "error": false,
               "message": "Data updated for " + req.params.id
@@ -177,10 +178,10 @@ router.route("/users/:id")
             };
           } else {
             // não houveram erros
-            console.log("Registro de usuário " + req.params.id + " foram apagados.");
+            console.log("Registro de usuário " + req.params.id + " foi apagado.");
             response = {
               "error": false,
-              "message": "Data associated with "+req.params.id+"is deleted"
+              "message": "Data associated with "+req.params.id+" is deleted"
             };
           }
           res.json(response);
@@ -188,6 +189,7 @@ router.route("/users/:id")
       }
     });
   }); // route GET, PUT e DELETE /users/:id
+
 
 app.use('/', router);
 
