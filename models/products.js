@@ -12,4 +12,4 @@ var productSchema = {
   "brand": String // Marca (Nestlé, Bauducco, Piracanjuba, Friboi, etc.)
 };
 // create model if not exists.
-module.exports = mongoose.model('products', userSchema);
+module.exports = mongoose.model('products', productSchema);
