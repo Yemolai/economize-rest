@@ -52,7 +52,7 @@ router.route("/users").get(function (req, res) {
     });
   })
   .post(function (req, res) {
-    console.log("Requisitando: POST /users\nDados da requisição:", req);
+    console.log("Requisitando: POST /users");
     var db = new mongoOp();
     var response = {};
     //fetch email & password from REST request.
@@ -85,7 +85,7 @@ router.route("/users").get(function (req, res) {
 
 router.route("/users/:id")
   .get(function (req, res) {
-    console.log("Requisição: GET /users/:id");
+    console.log("Requisição: GET /users/" + req.params.id);
     var response = {};
     mongoOp.findById(req.params.id, function (err, data) {
       // This will run Mongo Query to fetch data based on ID
@@ -152,7 +152,42 @@ router.route("/users/:id")
         });
       }
     });
-  }); // route GET /users/:id
+  })
+  .delete(function (req, res) {
+    console.log("Requisição: DELETE /users/" + req.params.id);
+    var response = {};
+    // find the data
+    mongoOp.findById(req.params.id, function (err,data) {
+      if (err) {
+        console.log("Erro ao requisitar dados com id " + req.params.id);
+        response = {
+          "error": true,
+          "message": "Error fetching data"
+        };
+      } else {
+        // data exists, remove it
+        console.log("Tentando apagar registro " + req.params.id);
+        mongoOp.remove({_id: req.params.id}, function (err) {
+          if (err) {
+            // registro apagado
+            console.log("Não foi possível apagar o registro " + req.params.id);
+            response = {
+              "error": true,
+              "message": "Error deleting data"
+            };
+          } else {
+            // não houveram erros
+            console.log("Registro de usuário " + req.params.id + " foram apagados.");
+            responde = {
+              "error": false,
+              "message": "Data associated with "+req.params.id+"is deleted"
+            };
+          }
+          res.json(response);
+        });
+      }
+    });
+  }); // route GET, PUT e DELETE /users/:id
 
 app.use('/', router);
 
