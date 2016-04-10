@@ -5,7 +5,10 @@ var router = express.Router();
 // Objeto do mongoose para manipulação do MongoDB
 var mongoOp = require("./models/mongo");
 // Objeto do Mongoose para acessar DB produtos no MongoDB
+var products = require("./models/products.js");
+
 console.log("Inicializando\n\n...\n");
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   "extended": false
@@ -32,7 +35,8 @@ router.get("/", function (req, res) {
 // HTTP. Então se você tem a mesma URL com diferentes operações HTTP como GET,
 // POST, etc. use o route() para remover código redundante e enxutar o script.
 
-router.route("/users").get(function (req, res) {
+router.route("/users")
+  .get(function (req, res) {
     console.log("Requisitando: GET /users");
     var response = {};
     mongoOp.find({}, function (err, data) {
@@ -158,7 +162,7 @@ router.route("/users/:id")
     console.log("Requisição: DELETE /users/" + req.params.id);
     var response = {};
     // find the data
-    mongoOp.findById(req.params.id, function (err,data) {
+    mongoOp.findById(req.params.id, function (err, data) {
       if (err) {
         console.log("Erro ao requisitar dados com id " + req.params.id);
         response = {
@@ -168,7 +172,9 @@ router.route("/users/:id")
       } else {
         // data exists, remove it
         console.log("Tentando apagar registro " + req.params.id);
-        mongoOp.remove({_id: req.params.id}, function (err) {
+        mongoOp.remove({
+          _id: req.params.id
+        }, function (err) {
           if (err) {
             // registro apagado
             console.log("Não foi possível apagar o registro " + req.params.id);
@@ -181,7 +187,7 @@ router.route("/users/:id")
             console.log("Registro de usuário " + req.params.id + " foi apagado.");
             response = {
               "error": false,
-              "message": "Data associated with "+req.params.id+" is deleted"
+              "message": "Data associated with " + req.params.id + " is deleted"
             };
           }
           res.json(response);
@@ -190,6 +196,27 @@ router.route("/users/:id")
     });
   }); // route GET, PUT e DELETE /users/:id
 
+router.route("/products")
+  .get(function (req, res) {
+    console.log("Requisição: GET /products");
+    var response = {};
+    products.find({}, function (err, data) {
+      if (err) {
+        console.log("Erro ao requisitar dados de produtos do DB\nErro:",err);
+        response = {
+          "error": true,
+          "message": "Error fetching data"
+        };
+      } else {
+        console.log("Respondendo com os seguintes dados:", data);
+        response = {
+          "error": false,
+          "message": data
+        };
+      }
+      res.json(response);
+    });
+  })
 
 app.use('/', router);
 
