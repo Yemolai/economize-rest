@@ -141,7 +141,7 @@ router.route("/users/:id")
           } else {
             console.log("Dados do registro " + req.params.id + "atualizados.");
             response = {
-              "error": true,
+              "error": false,
               "message": "Data updated for " + req.params.id
             };
           }
