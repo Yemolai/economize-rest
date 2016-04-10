@@ -178,7 +178,7 @@ router.route("/users/:id")
           } else {
             // não houveram erros
             console.log("Registro de usuário " + req.params.id + " foram apagados.");
-            responde = {
+            response = {
               "error": false,
               "message": "Data associated with "+req.params.id+"is deleted"
             };
