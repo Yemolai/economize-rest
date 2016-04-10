@@ -33,46 +33,45 @@ router.get("/", function(req, res) {
 router.route("/users").get(function(req, res) {
     var response = {};
     mongoOp.find({}, function(err, data) {
-            if (err)
-                response = {
-                    "error": true,
-                    "message": "Error fetching the data"
-                };
-            else
-                response = {
-                    "error": false,
-                    "message": data
-                };
+        if (err)
+            response = {
+                "error": true,
+                "message": "Error fetching the data"
+            };
+        else
+            response = {
+                "error": false,
+                "message": data
+            };
 
-            res.json(response);
-        })
-        .post(function(req, res) {
-            var db = new mongoOp();
-            var response = {};
-            //fetch email & password from REST request.
-            // Add Strict validation when you use this in Production.
-            db.userEmail = req.body.email;
-            // Hash the password using SHA1 algorithm.
-            db.userPassword = require('crypto')
-                .createHash('sha1')
-                .update(req.body.password)
-                .digest('base64');
-            db.save(function(err) {
-                // save() will run the MongoDB insert() command.
-                // and will add new data in conllection.
-                if (err)
-                    response = {
-                        "error": true,
-                        "message": "Error adding data"
-                    };
-                else
-                    response = {
-                        "error": false,
-                        "message": "Data added"
-                    };
-                res.json(response);
-            });
-        });
+        res.json(response);
+    });
+}).post(function(req, res) {
+    var db = new mongoOp();
+    var response = {};
+    //fetch email & password from REST request.
+    // Add Strict validation when you use this in Production.
+    db.userEmail = req.body.email;
+    // Hash the password using SHA1 algorithm.
+    db.userPassword = require('crypto')
+        .createHash('sha1')
+        .update(req.body.password)
+        .digest('base64');
+    db.save(function(err) {
+        // save() will run the MongoDB insert() command.
+        // and will add new data in conllection.
+        if (err)
+            response = {
+                "error": true,
+                "message": "Error adding data"
+            };
+        else
+            response = {
+                "error": false,
+                "message": "Data added"
+            };
+        res.json(response);
+    });
 });
 
 
