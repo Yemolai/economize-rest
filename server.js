@@ -121,12 +121,12 @@ router.route("/users/:id")
         console.log("Registro " + req.params.id + "encontrado para ser atualizado");
         // we've got data from Mongo.
         // change it accordingly
-        if (req.body.userEmail !== undefined) {
+        if (req.body.email !== undefined) {
           console.log("Atualizando email");
           // case where email needs to be updated
           data.userEmail = req.body.email;
         }
-        if (req.body.userPassword !== undefined) {
+        if (req.body.password !== undefined) {
           console.log("Atualizando senha");
           // case where password need to be updated
           data.userPassword = require('crypto')
