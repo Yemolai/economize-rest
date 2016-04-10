@@ -86,7 +86,7 @@ router.route("/users/:id")
   .get(function (req, res) {
     console.log("Requisição: GET /users/:id \nDados da requisição:", req);
     var response = {};
-    mongoOp.findById(req.parameters.id, function (err, data) {
+    mongoOp.findById(req.params.id, function (err, data) {
       // This will run Mongo Query to fetch data based on ID
       if (err) {
         console.log("Erro ao tentar requisitar dados do MongoDB\nErro:", err);
