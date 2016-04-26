@@ -1,11 +1,13 @@
 // libraries
 var rest = require('restify');
-var pg = require('pg');
+var Sequelize = require('sequelize');
 var bodyParser = require('body-parser');
+var _ = require('lodash');
+var crypto = require('crypto');
 
 // variables
 var port = process.env.PORT || 5000;
-var pgPath = process.env.DATABASE_URL;
+var DATABASE_URL = process.env.DATABASE_URL;
 var server = rest.createServer({
   "name": "EconomizeAPI",
 });
@@ -15,21 +17,41 @@ server.use(bodyParser.urlencoded({
   "extended": false
 }));
 
-pg.defaults.ssl = true;
-var client = new pg.Client(pgPath);
-client.connect(function(err) {
-  if(err) {
-    return console.error('could not connect to postgres', err);
+var db = new Sequelize(DATABASE_URL);
+
+var User = db.define('user', {
+  uuid: {
+    type: Sequelize.STRING,
+    field: "_id"
+  },
+  firstName: {
+    type: Sequelize.STRING,
+    field: "first_name"
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    field: "last_name"
+  },
+  cpfNumber: {
+    type: Sequelize.STRING,
+    field: "cpf"
+  },
+  password: {
+    type: Sequelize.STRING
   }
-  client.query('SELECT NOW() AS "theTime"', function(err, result) {
-    if(err) {
-      return console.error('error running query', err);
-    }
-    console.log(result.rows[0].theTime);
-    //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
-  });
+},{
+  freezeTableName: true
 });
 
+User.sync({force: true}).then(function () {
+  // Tabela foi criada
+  return User.create({
+    firstName: 'Romulo',
+    lastName: 'Rodrigues',
+    cpfNumber: '12345678901',
+    password: crypto.createHash('sha256').update('!yemolai!', "utf8").digest('base64')
+  });
+});
 
 // routing
 /*
@@ -48,6 +70,13 @@ server.get('/', function (req, res, next) {
     "error": false,
     "message": "Hello. Are you lost?"
   });
+});
+
+server.get('/users', function (req, res, next) {
+  console.log("requisitando: GET /users");
+  var userList = User.findAll({});
+  console.log("respondendo com conteúdo da tabela de usuários.")
+  res.json(userList);
 });
 
 // Starting server
