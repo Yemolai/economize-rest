@@ -47,7 +47,7 @@ User.sync({force: true}).then(function () {
   // Tabela foi criada
   return User.findOrCreate( {
     where: {
-      _id: __.uniqueId,
+      _id: _.uniqueId,
       firstName: 'Romulo',
       lastName: 'Rodrigues',
       cpfNumber: '12345678901',
