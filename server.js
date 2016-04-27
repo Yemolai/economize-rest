@@ -78,7 +78,9 @@ server.get('/users', function (req, res, next) {
   console.log("requisitando: GET /users");
   var userList = User.all().then(function (users) {
     console.log("respondendo com conteúdo da tabela de usuários.")
-    res.json(userList);
+    res.json(users);
+    console.log("userList:", userList);
+    console.log("users:", users);
   });
 });
 
