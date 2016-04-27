@@ -20,10 +20,6 @@ server.use(bodyParser.urlencoded({
 var db = new Sequelize(DATABASE_URL);
 
 var User = db.define('user', {
-  uuid: {
-    type: Sequelize.STRING,
-    field: "_id"
-  },
   firstName: {
     type: Sequelize.STRING,
     field: "first_name"
@@ -47,7 +43,6 @@ User.sync({force: true}).then(function () {
   // Tabela foi criada
   return User.findOrCreate( {
     where: {
-      _id: _.uniqueId,
       firstName: 'Romulo',
       lastName: 'Rodrigues',
       cpfNumber: '12345678901',
