@@ -45,11 +45,13 @@ var User = db.define('user', {
 
 User.sync({force: true}).then(function () {
   // Tabela foi criada
-  return User.create({
-    firstName: 'Romulo',
-    lastName: 'Rodrigues',
-    cpfNumber: '12345678901',
-    password: crypto.createHash('sha256').update('!yemolai!', "utf8").digest('base64')
+  return User.findOrCreate( {
+    where: {
+      firstName: 'Romulo',
+      lastName: 'Rodrigues',
+      cpfNumber: '12345678901',
+      password: crypto.createHash('sha256').update('!yemolai!', "utf8").digest('base64')
+    }
   });
 });
 
@@ -74,9 +76,10 @@ server.get('/', function (req, res, next) {
 
 server.get('/users', function (req, res, next) {
   console.log("requisitando: GET /users");
-  var userList = User.findAll({});
-  console.log("respondendo com conteúdo da tabela de usuários.")
-  res.json(userList);
+  var userList = User.all().then(function (users) {
+    console.log("respondendo com conteúdo da tabela de usuários.")
+    res.json(userList);
+  });
 });
 
 // Starting server
