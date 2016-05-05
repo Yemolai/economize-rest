@@ -1,5 +1,6 @@
 .jsbeautifyrc
 /node_modules
 npm-debug.log
+localDatabaseConnectionParameters.js
 .DS_Store
 /*.env
